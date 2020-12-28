@@ -428,6 +428,7 @@ func (p *PodInfo) PodToConsulService(containerStatus v1.ContainerStatus, cfg *co
 
 	service.ID = fmt.Sprintf("%s-%s", p.Name, containerStatus.Name)
 	service.Tags = p.labelsToTags(containerStatus.Name)
+	service.Meta = p.Labels
 
 	//Add K8sTag from configuration
 	service.Tags = append(service.Tags, cfg.Controller.K8sTag)
@@ -486,6 +487,7 @@ func (p *PodInfo) livenessProbeToConsulCheck(probe *v1.Probe) *consulapi.AgentSe
 	check.Status = "passing"
 	check.Interval = fmt.Sprintf("%ds", probe.PeriodSeconds)
 	check.Timeout = fmt.Sprintf("%ds", probe.TimeoutSeconds)
+	check.DeregisterCriticalServiceAfter = "180s"
 
 	host := p.IP
 
