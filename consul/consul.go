@@ -75,10 +75,11 @@ func (c *Adapter) New(cfg *config.Config, podNodeName string, podIP string) *Ada
 		cfg.Consul.Token = cfg.Controller.ConsulToken
 	}
 
+	client, err := consulapi.NewClient(cfg.Consul)
+
 	//Timeout
 	cfg.Consul.HttpClient.Timeout = cfg.Controller.ConsulTimeout
 
-	client, err := consulapi.NewClient(cfg.Consul)
 	if err != nil {
 		glog.Fatalf("consul: %s", uri.Scheme)
 	}

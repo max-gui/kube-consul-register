@@ -30,6 +30,7 @@ dist/kube-consul-controller:
 
 docker:
 	docker build -t $(PREFIX):$(VERSION) .
+	docker save -o dist/$(PREFIX):$(VERSION).tar $(PREFIX):$(VERSION)
 
 $(PACKAGES): check-deps format
 	go test $(TESTARGS) $@
